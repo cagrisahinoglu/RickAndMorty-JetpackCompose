@@ -5,8 +5,10 @@ import com.cagrisahinoglu.data.remote.api.CharacterService
 import com.cagrisahinoglu.domain.model.ApiResponse
 import com.cagrisahinoglu.domain.model.Character
 import com.cagrisahinoglu.domain.repository.CharacterRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
 class CharacterRepositoryImpl @Inject constructor(
@@ -16,18 +18,20 @@ class CharacterRepositoryImpl @Inject constructor(
         flow {
             emit(ApiResponse.Loading)
             val response = characterService.getCharacterList()
-            if (response.isSuccessful) {
+            if (response.isSuccessful && response.body() != null) {
                 emit(
                     ApiResponse.Success(
                         data = response.body()!!.toDomain()
                     )
                 )
-            } else {
+            } else if (response.isSuccessful || response.body() == null) {
                 emit(
                     ApiResponse.Error(
                         message = "There is a problem: " + response.message() + " code: " + response.code()
                     )
                 )
+            } else {
+                emit(ApiResponse.Loading)
             }
-        }
+        }.flowOn(Dispatchers.IO)
 }

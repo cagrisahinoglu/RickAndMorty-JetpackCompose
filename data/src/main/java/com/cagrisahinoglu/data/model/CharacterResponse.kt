@@ -6,14 +6,14 @@ import com.google.gson.annotations.SerializedName
 data class CharacterResponse(
     @SerializedName("info")
     val info: InfoResponse,
-    @SerializedName("result")
-    val result: List<ResultResponse>
+    @SerializedName("results")
+    val results: List<ResultResponse>
 )
 
 fun CharacterResponse.toDomain(): Character {
     return Character(
         info = info.toDomain(),
-        results = result.map {
+        results = results.map {
             it.toDomain()
         }
     )
@@ -22,7 +22,7 @@ fun CharacterResponse.toDomain(): Character {
 fun Character.toData(): CharacterResponse {
     return CharacterResponse(
         info = info.toData(),
-        result = results.map {
+        results = results.map {
             it.toData()
         }
     )

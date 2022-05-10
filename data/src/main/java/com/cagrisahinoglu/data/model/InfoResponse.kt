@@ -11,7 +11,7 @@ data class InfoResponse(
     @SerializedName("pages")
     val pages: Int,
     @SerializedName("prev")
-    val prev: Any
+    val prev: String?
 )
 
 fun InfoResponse.toDomain(): Info {
