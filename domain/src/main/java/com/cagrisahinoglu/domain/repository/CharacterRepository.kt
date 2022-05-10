@@ -5,6 +5,6 @@ import com.cagrisahinoglu.domain.model.Character
 import kotlinx.coroutines.flow.Flow
 
 interface CharacterRepository {
-    suspend fun getCharacterList(): Flow<ApiResponse<List<Character>>>
+    fun getCharacterList(): Flow<ApiResponse<Character>>
 
 }
