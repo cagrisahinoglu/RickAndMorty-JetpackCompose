@@ -52,6 +52,7 @@ dependencies {
     def hiltVersion = '2.40.5'
     def room_version = "2.4.2"
     def coroutinesVersion = "1.6.0"
+    def nav_version = "2.4.2"
 
     implementation project(':domain')
 
@@ -82,4 +83,7 @@ dependencies {
     //Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
+
+    //Compose Navigation
+    implementation "androidx.navigation:navigation-compose:$nav_version"
 }
