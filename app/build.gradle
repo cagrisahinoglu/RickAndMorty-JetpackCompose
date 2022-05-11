@@ -53,6 +53,7 @@ dependencies {
     def room_version = "2.4.2"
     def coroutinesVersion = "1.6.0"
     def nav_version = "2.4.2"
+    def coilVersion = "2.0.0"
 
     implementation project(':domain')
     implementation project(':data')
@@ -87,4 +88,7 @@ dependencies {
 
     //Compose Navigation
     implementation "androidx.navigation:navigation-compose:$nav_version"
+
+    //Coil
+    implementation "io.coil-kt:coil-compose:$coilVersion"
 }
