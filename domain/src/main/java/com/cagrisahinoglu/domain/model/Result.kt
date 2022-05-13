@@ -13,5 +13,12 @@ data class Result(
     val species: String,
     val status: String,
     val type: String,
-    val url: String
+    val url: String,
+    var liveStatus: CharacterLiveStatus
 )
+enum class CharacterLiveStatus {
+    ALIVE,
+    DEAD,
+    UNKNOWN
+}
+

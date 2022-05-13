@@ -1,5 +1,6 @@
 package com.cagrisahinoglu.data.model
 
+import com.cagrisahinoglu.domain.model.CharacterLiveStatus
 import com.cagrisahinoglu.domain.model.Result
 import com.google.gson.annotations.SerializedName
 
@@ -43,7 +44,18 @@ fun ResultResponse.toDomain(): Result {
         species = species,
         status = status,
         type = type,
-        url = url
+        url = url,
+        liveStatus = when (status) {
+            "Alive" -> {
+                CharacterLiveStatus.ALIVE
+            }
+            "Dead" -> {
+                CharacterLiveStatus.DEAD
+            }
+            else -> {
+                CharacterLiveStatus.UNKNOWN
+            }
+        }
     )
 }
 
