@@ -10,12 +10,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.cagrisahinoglu.rickandmortycompose.characterListing.CharacterListingPage
+import com.cagrisahinoglu.rickandmortycompose.common.AppTopBar
 import com.cagrisahinoglu.rickandmortycompose.ui.theme.RickAndMortyComposeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -33,11 +33,12 @@ class MainActivity : ComponentActivity() {
                     Column(
                         modifier = Modifier.fillMaxSize()
                     ) {
-                        TopAppBar {
-                            Text(text = "Characters",
+                        AppTopBar {
+                            Text(
+                                text = "Characters",
                                 textAlign = TextAlign.Center,
                                 modifier = Modifier.fillMaxWidth(),
-                                style = MaterialTheme.typography.body1
+                                style = MaterialTheme.typography.body1,
                             )
                         }
                         CharacterListingPage()
