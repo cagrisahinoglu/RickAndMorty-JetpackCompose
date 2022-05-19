@@ -5,7 +5,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -17,6 +17,8 @@ fun CharacterListingPage(
     characterListingViewModel: CharacterListingViewModel = viewModel()
 ) {
     val state = characterListingViewModel.state
+    val characterList = state.characters?.results?.toMutableStateList()
+
     AnimatedVisibility(
         visible = state.isLoading
     ) {
@@ -38,10 +40,10 @@ fun CharacterListingPage(
         LazyColumn(
             modifier = Modifier.fillMaxSize()
         ) {
-            state.characters?.results?.size?.let {
+            characterList?.size?.let {
                 items(it) { index ->
                     CharacterListingItem(
-                        item = state.characters!!.results[index]
+                        item = characterList[index]
                     )
                 }
             }

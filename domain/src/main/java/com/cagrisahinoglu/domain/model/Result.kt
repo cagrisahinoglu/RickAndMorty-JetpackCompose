@@ -14,7 +14,8 @@ data class Result(
     val status: String,
     val type: String,
     val url: String,
-    var liveStatus: CharacterLiveStatus
+    var liveStatus: CharacterLiveStatus,
+    var isFav: Boolean
 )
 enum class CharacterLiveStatus {
     ALIVE,

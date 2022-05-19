@@ -45,6 +45,7 @@ fun ResultResponse.toDomain(): Result {
         status = status,
         type = type,
         url = url,
+        isFav = false,
         liveStatus = when (status) {
             "Alive" -> {
                 CharacterLiveStatus.ALIVE

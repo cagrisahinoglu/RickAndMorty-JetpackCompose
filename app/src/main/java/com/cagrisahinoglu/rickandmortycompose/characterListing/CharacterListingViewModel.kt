@@ -1,19 +1,19 @@
 package com.cagrisahinoglu.rickandmortycompose.characterListing
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.*
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cagrisahinoglu.domain.model.ApiResponse
 import com.cagrisahinoglu.domain.repository.CharacterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CharacterListingViewModel
-    @Inject constructor(private val characterRepository: CharacterRepository): ViewModel() {
+@Inject constructor(private val characterRepository: CharacterRepository) : ViewModel() {
 
     var state by mutableStateOf(CharacterListingViewState())
 
@@ -25,11 +25,10 @@ class CharacterListingViewModel
         state = state.copy(isLoading = true)
 
         viewModelScope.launch {
-            delay(1000)
             characterRepository
                 .getCharacterList()
                 .collect { response ->
-                    when(response) {
+                    when (response) {
                         is ApiResponse.Success -> {
                             state = state.copy(
                                 characters = response.data,

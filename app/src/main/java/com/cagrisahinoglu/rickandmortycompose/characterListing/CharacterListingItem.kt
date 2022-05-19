@@ -7,6 +7,9 @@ import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -17,12 +20,17 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.cagrisahinoglu.domain.model.Result
+import com.cagrisahinoglu.rickandmortycompose.common.FavButton
+import com.cagrisahinoglu.rickandmortycompose.common.NetworkImage
 import com.cagrisahinoglu.rickandmortycompose.util.getColorForLiveStatus
 
 @Composable
 fun CharacterListingItem(
-    item: Result
+    item: Result,
 ) {
+    var isFav by rememberSaveable(item) {
+        mutableStateOf(item.isFav)
+    }
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -35,56 +43,66 @@ fun CharacterListingItem(
         backgroundColor = MaterialTheme.colors.surface
     ) {
         Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(10.dp)
+
         ) {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(item.image)
-                    .crossfade(true)
-                    .build(),
-                contentDescription = "avatar",
-                modifier = Modifier
-                    .size(70.dp)
-                    .clip(CircleShape)
-            )
-            Spacer(
-                modifier = Modifier.width(10.dp)
-            )
-            Column {
-                Text(
-                    text = item.name,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
+            Row() {
+                Box {
+                    NetworkImage(
+                        url = item.image,
+                        modifier = Modifier
+                            .size(70.dp)
+                            .clip(CircleShape)
+                    )
+                }
                 Spacer(
-                    modifier = Modifier.height(5.dp)
+                    modifier = Modifier.width(10.dp)
                 )
-                Text(
-                    text = item.species,
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Spacer(
-                    modifier = Modifier.height(5.dp)
-                )
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+                Column {
                     Text(
-                        text = item.status,
+                        text = item.name,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                    )
+                    Spacer(
+                        modifier = Modifier.height(5.dp)
+                    )
+                    Text(
+                        text = item.species,
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Bold
                     )
-                    Spacer(modifier = Modifier.width(5.dp))
-                    Box(
-                        modifier = Modifier
-                            .size(10.dp)
-                            .clip(CircleShape)
-                            .background(getColorForLiveStatus(item.liveStatus))
+                    Spacer(
+                        modifier = Modifier.height(5.dp)
                     )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = item.status,
+                            fontSize = 12.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Spacer(modifier = Modifier.width(5.dp))
+                        Box(
+                            modifier = Modifier
+                                .size(10.dp)
+                                .clip(CircleShape)
+                                .background(getColorForLiveStatus(item.liveStatus))
+                        )
+                    }
                 }
+            }
+            FavButton(
+                isFav = isFav,
+                modifier = Modifier
+                    .size(26.dp)
+                    .align(Alignment.CenterVertically)
+            ) {
+                isFav = !isFav
             }
         }
     }
