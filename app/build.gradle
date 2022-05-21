@@ -88,6 +88,7 @@ dependencies {
 
     //Compose Navigation
     implementation "androidx.navigation:navigation-compose:$nav_version"
+    implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
 
     //Coil
     implementation "io.coil-kt:coil-compose:$coilVersion"

@@ -4,18 +4,15 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import com.cagrisahinoglu.rickandmortycompose.characterListing.CharacterListingPage
-import com.cagrisahinoglu.rickandmortycompose.common.AppTopBar
+import androidx.navigation.compose.rememberNavController
+import com.cagrisahinoglu.rickandmortycompose.common.BottomBar
+import com.cagrisahinoglu.rickandmortycompose.common.NavUtil
 import com.cagrisahinoglu.rickandmortycompose.ui.theme.RickAndMortyComposeTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,38 +23,28 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             RickAndMortyComposeTheme {
-                // A surface container using the 'background' color from the theme
+                val navController = rememberNavController()
                 Surface(
                     color = MaterialTheme.colors.background
                 ) {
-                    Column(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-                        AppTopBar {
-                            Text(
-                                text = "Characters",
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.fillMaxWidth(),
-                                style = MaterialTheme.typography.body1,
+                    Scaffold(
+                        bottomBar = {
+                            BottomBar(
+                                navController = navController,
+                                onItemClick = { item, isSelected ->
+                                    if(!isSelected) {
+                                        navController.navigate(item.route)
+                                    }
+                                }
                             )
                         }
-                        CharacterListingPage()
+                    ){
+                        Box(modifier = Modifier.padding(it)) {
+                            NavUtil(navHostController = navController)
+                        }
                     }
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    RickAndMortyComposeTheme {
-        Greeting("Android")
     }
 }
