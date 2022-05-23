@@ -1,6 +1,7 @@
 package com.cagrisahinoglu.rickandmortycompose.characterListing
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
@@ -26,6 +27,7 @@ import com.cagrisahinoglu.rickandmortycompose.util.getColorForLiveStatus
 @Composable
 fun CharacterListingItem(
     item: Result,
+    onItemClick: () -> Unit
 ) {
     var isFav by rememberSaveable(item) {
         mutableStateOf(item.isFav)
@@ -38,7 +40,9 @@ fun CharacterListingItem(
                 end = 10.dp,
                 top = 5.dp,
                 bottom = 5.dp
-            ),
+            ).clickable {
+              onItemClick()
+            },
         backgroundColor = MaterialTheme.colors.surface
     ) {
         Row(

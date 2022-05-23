@@ -5,6 +5,7 @@ object Routes {
     const val episodes = "episodes"
     const val favorites = "favorites"
     const val search = "search"
+    const val detail = "detail"
 }
 
 object BottomBarNames {

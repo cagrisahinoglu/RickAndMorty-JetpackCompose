@@ -2,39 +2,37 @@ package com.cagrisahinoglu.rickandmortycompose.characterListing
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.cagrisahinoglu.rickandmortycompose.common.AppTopBar
+import com.cagrisahinoglu.rickandmortycompose.util.BottomBarItems
+import com.cagrisahinoglu.rickandmortycompose.util.Routes
 
 @ExperimentalAnimationApi
 @Composable
 fun CharacterListingPage(
-    characterListingViewModel: CharacterListingViewModel = hiltViewModel()
+    navController: NavController,
+    characterViewModel: CharacterListingViewModel
 ) {
-    val state = characterListingViewModel.state
+    val state = characterViewModel.state
     val characterList = state.characters?.results?.toMutableStateList()
 
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        AppTopBar {
-            Text(
-                text = "Characters",
-                textAlign = TextAlign.Center,
-                modifier = Modifier.fillMaxWidth(),
-                style = MaterialTheme.typography.body1,
-            )
-        }
+        AppTopBar(
+            title = BottomBarItems.Characters.barItemName,
+        )
 
         AnimatedVisibility(
             visible = state.isLoading
@@ -61,7 +59,10 @@ fun CharacterListingPage(
                     items(it) { index ->
                         CharacterListingItem(
                             item = characterList[index]
-                        )
+                        ) {
+                            characterViewModel.setCharacter(characterList[index])
+                            navController.navigate(Routes.detail)
+                        }
                     }
                 }
             }
