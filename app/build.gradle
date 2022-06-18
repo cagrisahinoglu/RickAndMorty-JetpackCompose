@@ -54,6 +54,7 @@ dependencies {
     def coroutinesVersion = "1.6.0"
     def nav_version = "2.4.2"
     def coilVersion = "2.0.0"
+    def paging_version = "3.1.1"
 
     implementation project(':domain')
     implementation project(':data')
@@ -92,4 +93,9 @@ dependencies {
 
     //Coil
     implementation "io.coil-kt:coil-compose:$coilVersion"
+
+    //Paging3 Common
+    implementation "androidx.paging:paging-common:$paging_version"
+    implementation "androidx.paging:paging-runtime:$paging_version"
+    implementation "androidx.paging:paging-compose:1.0.0-alpha15"
 }
