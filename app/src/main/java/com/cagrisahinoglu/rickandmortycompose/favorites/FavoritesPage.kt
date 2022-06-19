@@ -12,8 +12,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.cagrisahinoglu.rickandmortycompose.R
 import com.cagrisahinoglu.rickandmortycompose.characterListing.CharacterListingItem
 import com.cagrisahinoglu.rickandmortycompose.common.AppTopBar
+import com.cagrisahinoglu.rickandmortycompose.common.NoResultView
 import com.cagrisahinoglu.rickandmortycompose.util.BottomBarItems
 import com.cagrisahinoglu.rickandmortycompose.util.ViewState
 
@@ -66,14 +68,20 @@ fun FavoritesPage(
                 }
             }
             ViewState.NoResult -> {
-                Box(modifier = Modifier.fillMaxSize()) {
-
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    NoResultView(
+                        animSize = 200.dp,
+                        animFileRes = R.raw.no_result_lottie,
+                        text = "There is no favorite character"
+                    )
                 }
             }
             is ViewState.Error -> {
 
             }
-
         }
     }
 }
