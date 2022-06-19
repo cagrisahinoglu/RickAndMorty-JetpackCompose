@@ -1,9 +1,9 @@
 package com.cagrisahinoglu.data.di
 
+import com.cagrisahinoglu.data.dataSource.local.CharacterLocalDataSourceImpl
 import com.cagrisahinoglu.data.dataSource.remote.CharacterRemoteDataSourceImpl
-import com.cagrisahinoglu.data.repository.CharacterRepositoryImpl
-import com.cagrisahinoglu.domain.dataSource.CharacterRemoteDataSource
-import com.cagrisahinoglu.domain.repository.CharacterRepository
+import com.cagrisahinoglu.domain.dataSource.local.CharactersLocalDataSource
+import com.cagrisahinoglu.domain.dataSource.remote.CharacterRemoteDataSource
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -16,5 +16,10 @@ interface DataSourceModule {
     @Binds
     @Singleton
     fun provideCharacterRemoteDataSource(characterRemoteDataSourceImpl: CharacterRemoteDataSourceImpl)
-    : CharacterRemoteDataSource
+            : CharacterRemoteDataSource
+
+    @Binds
+    @Singleton
+    fun provideCharacterLocalDataSource(characterLocalDataSourceImpl: CharacterLocalDataSourceImpl)
+            : CharactersLocalDataSource
 }

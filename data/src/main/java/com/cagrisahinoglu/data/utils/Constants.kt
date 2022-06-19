@@ -6,3 +6,7 @@ object RemoteConstants {
 
     const val CHARACTER_LIST_PAGE = "page"
 }
+
+object LocalConstants {
+    const val CHARACTER_TABLE_NAME = "characters"
+}

@@ -7,25 +7,32 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.cagrisahinoglu.domain.model.Result
-import com.cagrisahinoglu.domain.usecase.GetCharacterListUseCase
+import com.cagrisahinoglu.domain.model.Character
+import com.cagrisahinoglu.domain.usecase.characters.AddCharacterFavoriteUseCase
+import com.cagrisahinoglu.domain.usecase.characters.GetCharacterListUseCase
+import com.cagrisahinoglu.domain.usecase.characters.RemoveCharacterFavoriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CharacterListingViewModel
 @Inject constructor(
-    private val getCharacterListUseCase: GetCharacterListUseCase
+    private val getCharacterListUseCase: GetCharacterListUseCase,
+    private val addCharacterFavoriteUseCase: AddCharacterFavoriteUseCase,
+    private val removeCharacterFavoriteUseCase: RemoveCharacterFavoriteUseCase
 ) : ViewModel() {
 
-    private val _viewState: MutableState<CharacterListingViewState<Flow<PagingData<Result>>>> =
+    private val _viewState: MutableState<CharacterListingViewState<Flow<PagingData<Character>>>> =
         mutableStateOf(CharacterListingViewState.Loading)
-    val viewState: State<CharacterListingViewState<Flow<PagingData<Result>>>>
+    val viewState: State<CharacterListingViewState<Flow<PagingData<Character>>>>
         get() = _viewState
 
-    var selectedCharacter by mutableStateOf<Result?>(null)
+    var selectedCharacter by mutableStateOf<Character?>(null)
         private set
 
     init {
@@ -33,19 +40,33 @@ class CharacterListingViewModel
     }
 
     private fun getCharacters() {
-        viewModelScope.launch {
+        viewModelScope.launch() {
+            delay(500)
             val response = Pager(
                 PagingConfig(pageSize = 20)
             ) {
                 getCharacterListUseCase
-            }.flow.cachedIn(viewModelScope)
+            }
+                .flow
+                .cachedIn(viewModelScope)
+                .flowOn(Dispatchers.IO)
             _viewState.value = CharacterListingViewState.Success(
                 data = response
             )
         }
     }
 
-    fun setCharacter(character: Result?) {
+    fun updateFavStatus(character: Character, isFav: Boolean) {
+        viewModelScope.launch() {
+            if (isFav) {
+                removeCharacterFavoriteUseCase(character)
+            } else {
+                addCharacterFavoriteUseCase(character)
+            }
+        }
+    }
+
+    fun setCharacter(character: Character?) {
         selectedCharacter = character
     }
 }

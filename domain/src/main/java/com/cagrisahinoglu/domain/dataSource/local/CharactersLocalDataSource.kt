@@ -1,10 +1,8 @@
-package com.cagrisahinoglu.domain.repository
+package com.cagrisahinoglu.domain.dataSource.local
 
 import com.cagrisahinoglu.domain.model.Character
-import com.cagrisahinoglu.domain.model.Result
 
-interface CharacterRepository {
-    suspend fun getCharacterList(page: Int): Result
+interface CharactersLocalDataSource {
     suspend fun insertCharacter(character: Character)
     suspend fun deleteCharacter(character: Character)
     suspend fun checkIsCharacterFavorite(characterId: Int): List<Character>

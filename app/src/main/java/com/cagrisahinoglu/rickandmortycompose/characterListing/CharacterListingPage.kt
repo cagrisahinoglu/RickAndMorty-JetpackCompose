@@ -7,6 +7,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -37,12 +41,25 @@ fun CharacterListingPage(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     items(pagingItems.itemCount) { index ->
-                        CharacterListingItem(
-                            item = pagingItems[index]!!
-                        ) {
-                            characterViewModel.setCharacter(pagingItems[index])
-                            navController.navigate(Routes.detail)
+                        val item = pagingItems[index]
+                        var isFav by rememberSaveable(pagingItems[index]) {
+                            mutableStateOf(pagingItems[index]?.isFav)
                         }
+                        CharacterListingItem(
+                            item = item!!,
+                            isFav = isFav!!,
+                            onItemClick = {
+                                characterViewModel.setCharacter(item)
+                                navController.navigate(Routes.detail)
+                            },
+                            onFavButtonClick = {
+                                characterViewModel.updateFavStatus(
+                                    character = item,
+                                    isFav = isFav!!
+                                )
+                                isFav = !isFav!!
+                            }
+                        )
                     }
                 }
             }

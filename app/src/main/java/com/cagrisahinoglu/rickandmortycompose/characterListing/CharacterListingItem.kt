@@ -19,19 +19,18 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.cagrisahinoglu.domain.model.Result
+import com.cagrisahinoglu.domain.model.Character
 import com.cagrisahinoglu.rickandmortycompose.common.FavButton
 import com.cagrisahinoglu.rickandmortycompose.common.NetworkImage
 import com.cagrisahinoglu.rickandmortycompose.util.getColorForLiveStatus
 
 @Composable
 fun CharacterListingItem(
-    item: Result,
-    onItemClick: () -> Unit
+    item: Character,
+    isFav: Boolean,
+    onItemClick: () -> Unit,
+    onFavButtonClick: () -> Unit
 ) {
-    var isFav by rememberSaveable(item) {
-        mutableStateOf(item.isFav)
-    }
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -106,10 +105,9 @@ fun CharacterListingItem(
                 isFav = isFav,
                 modifier = Modifier
                     .size(26.dp)
-                    .align(Alignment.CenterVertically)
-            ) {
-                isFav = !isFav
-            }
+                    .align(Alignment.CenterVertically),
+                onFavButtonClick = onFavButtonClick
+            )
         }
     }
 }

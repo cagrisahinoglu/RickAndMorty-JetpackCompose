@@ -1,25 +1,6 @@
 package com.cagrisahinoglu.domain.model
 
-
 data class Result(
-    val created: String,
-    val episode: List<String>,
-    val gender: String,
-    val id: Int,
-    val image: String,
-    val location: Location,
-    val name: String,
-    val origin: Origin,
-    val species: String,
-    val status: String,
-    val type: String,
-    val url: String,
-    var liveStatus: CharacterLiveStatus,
-    var isFav: Boolean
+    val info: Info,
+    val characters: List<Character>
 )
-enum class CharacterLiveStatus {
-    ALIVE,
-    DEAD,
-    UNKNOWN
-}
-
