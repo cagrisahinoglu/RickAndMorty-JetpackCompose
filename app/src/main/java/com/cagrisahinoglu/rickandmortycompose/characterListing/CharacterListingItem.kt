@@ -5,16 +5,16 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -27,9 +27,11 @@ import com.cagrisahinoglu.rickandmortycompose.util.getColorForLiveStatus
 @Composable
 fun CharacterListingItem(
     item: Character,
-    isFav: Boolean,
+    isFav: Boolean = false,
+    showFavButton: Boolean = true,
     onItemClick: () -> Unit,
-    onFavButtonClick: () -> Unit
+    onFavButtonClick: () -> Unit = {},
+    onUnfavButtonClick: (character: Character) -> Unit = {}
 ) {
     Card(
         modifier = Modifier
@@ -39,8 +41,9 @@ fun CharacterListingItem(
                 end = 10.dp,
                 top = 5.dp,
                 bottom = 5.dp
-            ).clickable {
-              onItemClick()
+            )
+            .clickable {
+                onItemClick()
             },
         backgroundColor = MaterialTheme.colors.surface
     ) {
@@ -96,18 +99,32 @@ fun CharacterListingItem(
                             modifier = Modifier
                                 .size(10.dp)
                                 .clip(CircleShape)
-                                .background(getColorForLiveStatus(item.liveStatus))
+                                .background(getColorForLiveStatus(item.status))
                         )
                     }
                 }
             }
-            FavButton(
-                isFav = isFav,
-                modifier = Modifier
-                    .size(26.dp)
-                    .align(Alignment.CenterVertically),
-                onFavButtonClick = onFavButtonClick
-            )
+            if (showFavButton) {
+                FavButton(
+                    isFav = isFav,
+                    modifier = Modifier
+                        .size(26.dp)
+                        .align(Alignment.CenterVertically),
+                    onFavButtonClick = onFavButtonClick
+                )
+            } else {
+                Icon(
+                    Icons.Default.Delete,
+                    tint = Color.Red,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .clickable {
+                            onUnfavButtonClick(item)
+                        }
+                        .size(26.dp)
+                        .align(Alignment.CenterVertically),
+                )
+            }
         }
     }
 }

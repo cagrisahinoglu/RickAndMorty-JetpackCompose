@@ -14,12 +14,6 @@ data class Character(
     val status: String = "",
     val type: String = "",
     val url: String = "",
-    var liveStatus: CharacterLiveStatus = CharacterLiveStatus.UNKNOWN,
     var isFav: Boolean = false
 )
-enum class CharacterLiveStatus {
-    ALIVE,
-    DEAD,
-    UNKNOWN
-}
 

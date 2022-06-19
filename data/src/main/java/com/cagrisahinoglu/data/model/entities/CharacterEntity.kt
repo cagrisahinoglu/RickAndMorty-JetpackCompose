@@ -12,6 +12,7 @@ data class CharacterEntity(
     val species: String,
     val gender: String,
     val status: String,
+    val image: String
 )
 
 fun CharacterEntity.toDomain(): Character {
@@ -21,6 +22,7 @@ fun CharacterEntity.toDomain(): Character {
         species = species,
         gender = gender,
         status = status,
+        image = image
     )
 }
 
@@ -31,4 +33,5 @@ fun Character.toEntity(): CharacterEntity =
         species = species,
         gender = gender,
         status = status,
+        image = image
     )

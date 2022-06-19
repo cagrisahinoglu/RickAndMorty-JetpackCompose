@@ -2,6 +2,7 @@ package com.cagrisahinoglu.data.di
 
 import com.cagrisahinoglu.domain.repository.CharacterRepository
 import com.cagrisahinoglu.domain.usecase.characters.AddCharacterFavoriteUseCase
+import com.cagrisahinoglu.domain.usecase.characters.GetAllFavoriteCharactersUseCase
 import com.cagrisahinoglu.domain.usecase.characters.GetCharacterListUseCase
 import com.cagrisahinoglu.domain.usecase.characters.RemoveCharacterFavoriteUseCase
 import dagger.Module
@@ -28,4 +29,9 @@ object UseCaseModule {
     @ViewModelScoped
     fun provideRemoveFavoriteCharacterUseCase(characterRepository: CharacterRepository): RemoveCharacterFavoriteUseCase =
         RemoveCharacterFavoriteUseCase(characterRepository = characterRepository)
+
+    @Provides
+    @ViewModelScoped
+    fun provideGetAllFavoriteCharactersUseCase(characterRepository: CharacterRepository): GetAllFavoriteCharactersUseCase =
+        GetAllFavoriteCharactersUseCase(characterRepository = characterRepository)
 }

@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onStart
 
 open class BaseDataSource {
-    fun <T> getResult(
+    fun <T> getResultAsFlow(
         coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
         call: suspend () -> T
     ): Flow<DataState<T>> = flow {

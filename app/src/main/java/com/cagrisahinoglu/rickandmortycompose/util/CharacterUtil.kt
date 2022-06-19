@@ -1,12 +1,11 @@
 package com.cagrisahinoglu.rickandmortycompose.util
 
 import androidx.compose.ui.graphics.Color
-import com.cagrisahinoglu.domain.model.CharacterLiveStatus
 
-fun getColorForLiveStatus(liveStatus: CharacterLiveStatus): Color {
-    return when(liveStatus) {
-        CharacterLiveStatus.ALIVE -> Color.Cyan
-        CharacterLiveStatus.DEAD -> Color.Red
+fun getColorForLiveStatus(status: String): Color {
+    return when (status) {
+        "Alive" -> Color.Cyan
+        "Dead" -> Color.Red
         else -> Color.Gray
     }
 }

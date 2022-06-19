@@ -1,4 +1,4 @@
-package com.cagrisahinoglu.rickandmortycompose.characterListing
+package com.cagrisahinoglu.rickandmortycompose.favorites
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -6,64 +6,56 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.paging.compose.collectAsLazyPagingItems
+import com.cagrisahinoglu.rickandmortycompose.characterListing.CharacterListingItem
 import com.cagrisahinoglu.rickandmortycompose.common.AppTopBar
 import com.cagrisahinoglu.rickandmortycompose.util.BottomBarItems
 import com.cagrisahinoglu.rickandmortycompose.util.ViewState
-import com.cagrisahinoglu.rickandmortycompose.util.Routes
 
 @Composable
-fun CharacterListingPage(
+fun FavoritesPage(
     navController: NavController,
-    characterViewModel: CharacterListingViewModel
+    favoritesViewModel: FavoritesViewModel
 ) {
+    val viewState = favoritesViewModel.viewState.value
     LaunchedEffect(Unit) {
-        characterViewModel.getCharacters()
+        favoritesViewModel.getFavoriteCharacterList()
     }
-    val viewState = characterViewModel.viewState.value
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
         AppTopBar(
-            title = BottomBarItems.Characters.barItemName,
+            title = BottomBarItems.Favorites.barItemName,
         )
 
-        when(viewState) {
+        when (viewState) {
             is ViewState.Success -> {
-                val pagingItems = viewState.data.collectAsLazyPagingItems()
+                val data = viewState.data
                 LazyColumn(
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    items(pagingItems.itemCount) { index ->
-                        val item = pagingItems[index]
-                        var isFav by rememberSaveable(pagingItems[index]) {
-                            mutableStateOf(pagingItems[index]?.isFav)
-                        }
+                    items(data.size) { index ->
+                        val item = data[index]
                         CharacterListingItem(
-                            item = item!!,
-                            isFav = isFav!!,
+                            item = item,
+                            showFavButton = false,
                             onItemClick = {
-                                characterViewModel.setCharacter(item)
-                                navController.navigate(Routes.detail)
+//                                characterViewModel.setCharacter(item)
+//                                navController.navigate(Routes.detail)
                             },
-                            onFavButtonClick = {
-                                characterViewModel.updateFavStatus(
-                                    character = item,
-                                    isFav = isFav!!
-                                )
-                                isFav = !isFav!!
+                            onUnfavButtonClick = {
+                                favoritesViewModel.removeFavoriteCharacter(it)
                             }
                         )
                     }
                 }
             }
-            is ViewState.Loading ->{
+            ViewState.Loading -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
@@ -73,9 +65,15 @@ fun CharacterListingPage(
                     )
                 }
             }
+            ViewState.NoResult -> {
+                Box(modifier = Modifier.fillMaxSize()) {
+
+                }
+            }
             is ViewState.Error -> {
 
             }
+
         }
     }
 }

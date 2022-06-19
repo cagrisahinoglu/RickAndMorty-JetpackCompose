@@ -5,6 +5,8 @@ import com.cagrisahinoglu.domain.dataSource.remote.CharacterRemoteDataSource
 import com.cagrisahinoglu.domain.model.Character
 import com.cagrisahinoglu.domain.model.Result
 import com.cagrisahinoglu.domain.repository.CharacterRepository
+import com.cagrisahinoglu.domain.util.DataState
+import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class CharacterRepositoryImpl @Inject constructor(
@@ -25,4 +27,7 @@ class CharacterRepositoryImpl @Inject constructor(
 
     override suspend fun checkIsCharacterFavorite(characterId: Int): List<Character> =
         charactersLocalDataSource.checkIsCharacterFavorite(characterId)
+
+    override fun getAllFavoriteCharacters(): Flow<DataState<List<Character>>> =
+        charactersLocalDataSource.getAllFavoriteCharacter()
 }

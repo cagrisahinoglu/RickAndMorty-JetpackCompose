@@ -59,7 +59,7 @@ fun CharacterDetail(
                         )
                         .border(
                             width = 5.dp,
-                            color = getColorForLiveStatus(character.liveStatus),
+                            color = getColorForLiveStatus(character.status),
                             shape = RoundedCornerShape(20.dp)
                         )
                 )
