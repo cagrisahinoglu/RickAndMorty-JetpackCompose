@@ -5,13 +5,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.cagrisahinoglu.domain.model.Character
 import com.cagrisahinoglu.rickandmortycompose.R
 import com.cagrisahinoglu.rickandmortycompose.characterListing.CharacterListingItem
 import com.cagrisahinoglu.rickandmortycompose.common.AppTopBar
@@ -25,12 +28,27 @@ fun FavoritesPage(
     favoritesViewModel: FavoritesViewModel
 ) {
     val viewState = favoritesViewModel.viewState.value
+    var dialogStatus by remember { mutableStateOf(false) }
+    var selectedCharacterToRemove by remember { mutableStateOf<Character?>(null) }
     LaunchedEffect(Unit) {
         favoritesViewModel.getFavoriteCharacterList()
     }
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
+        if (dialogStatus) {
+            RemoveCharacterDialog(
+                onDismissListener = {
+                    dialogStatus = false
+                    selectedCharacterToRemove = null
+                },
+                onConfirmListener = {
+                    favoritesViewModel.removeFavoriteCharacter(selectedCharacterToRemove!!)
+                    selectedCharacterToRemove = null
+                }
+            )
+        }
+
         AppTopBar(
             title = BottomBarItems.Favorites.barItemName,
         )
@@ -51,7 +69,8 @@ fun FavoritesPage(
 //                                navController.navigate(Routes.detail)
                             },
                             onUnfavButtonClick = {
-                                favoritesViewModel.removeFavoriteCharacter(it)
+                                dialogStatus = true
+                                selectedCharacterToRemove = it
                             }
                         )
                     }
@@ -84,4 +103,33 @@ fun FavoritesPage(
             }
         }
     }
+}
+
+@Composable
+fun RemoveCharacterDialog(
+    onDismissListener: () -> Unit,
+    onConfirmListener: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = {
+            onDismissListener()
+        },
+        confirmButton = {
+            TextButton(onClick = {
+                onConfirmListener()
+                onDismissListener()
+            }) {
+                Text(text = "Remove")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = {
+                onDismissListener()
+            }) {
+                Text(text = "Cancel")
+            }
+        },
+        title = { Text(text = "Remove Character") },
+        text = { Text(text = "Are you sure to remove selected character?") }
+    )
 }
