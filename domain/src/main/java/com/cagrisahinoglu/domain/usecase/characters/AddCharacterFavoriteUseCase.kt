@@ -12,7 +12,7 @@ class AddCharacterFavoriteUseCase (
 
     suspend operator fun invoke(character: Character) {
         withContext(dispatcher) {
-            characterRepository.insertCharacter(character)
+            characterRepository.insertCharacterFavorite(character)
         }
     }
 }

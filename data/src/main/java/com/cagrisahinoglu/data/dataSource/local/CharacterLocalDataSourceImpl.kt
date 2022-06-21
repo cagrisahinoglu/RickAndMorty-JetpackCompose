@@ -4,8 +4,9 @@ import androidx.paging.*
 import com.cagrisahinoglu.data.dataSource.BaseDataSource
 import com.cagrisahinoglu.data.local.CharacterRemoteMediator
 import com.cagrisahinoglu.data.local.dao.CharacterDao
+import com.cagrisahinoglu.data.local.dao.FavoriteCharacterDao
 import com.cagrisahinoglu.data.model.entities.toDomain
-import com.cagrisahinoglu.data.model.entities.toEntity
+import com.cagrisahinoglu.data.model.entities.toFavoriteEntity
 import com.cagrisahinoglu.data.remote.api.CharacterService
 import com.cagrisahinoglu.domain.dataSource.local.CharactersLocalDataSource
 import com.cagrisahinoglu.domain.model.Character
@@ -18,19 +19,9 @@ import javax.inject.Inject
 @OptIn(ExperimentalPagingApi::class)
 class CharacterLocalDataSourceImpl @Inject constructor(
     private val characterDao: CharacterDao,
+    private val favoriteCharacterDao: FavoriteCharacterDao,
     private val characterService: CharacterService
 ) : BaseDataSource(), CharactersLocalDataSource {
-    override suspend fun insertCharacter(character: Character) =
-        characterDao.insertCharacter(character.toEntity())
-
-    override suspend fun deleteCharacter(character: Character) =
-        characterDao.deleteCharacter(character.toEntity())
-
-    override suspend fun checkIsCharacterFavorite(characterId: Int): List<Character> =
-        characterDao.checkIsCharacterFavorite(characterId).map {
-            it.toDomain()
-        }
-
     override fun getAllCharacters(): Flow<PagingData<Character>> {
         return Pager(
             config = PagingConfig(pageSize = 20),
@@ -46,4 +37,25 @@ class CharacterLocalDataSourceImpl @Inject constructor(
             }
         }.flowOn(Dispatchers.IO)
     }
+
+    override fun getAllFavoriteCharacters(): Flow<PagingData<Character>> {
+        return Pager(
+            config = PagingConfig(pageSize = 20)
+        ) {
+            favoriteCharacterDao.getAllFavoriteCharacters()
+        }.flow.map { pagingData ->
+            pagingData.map {
+                it.toDomain()
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    override suspend fun getFavoriteCharacterById(id: Int): List<Character> =
+        favoriteCharacterDao.getFavoriteCharacterById(id).map { it.toDomain() }
+
+    override suspend fun insertCharacterFavorite(character: Character) =
+        favoriteCharacterDao.insertCharacter(character.toFavoriteEntity())
+
+    override suspend fun removeCharacterFavorite(character: Character) =
+        favoriteCharacterDao.deleteCharacter(character.toFavoriteEntity())
 }

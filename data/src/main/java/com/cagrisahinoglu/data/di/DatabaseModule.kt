@@ -3,6 +3,7 @@ package com.cagrisahinoglu.data.di
 import android.content.Context
 import androidx.room.Room
 import com.cagrisahinoglu.data.local.dao.CharacterDao
+import com.cagrisahinoglu.data.local.dao.FavoriteCharacterDao
 import com.cagrisahinoglu.data.local.db.AppDatabase
 import dagger.Module
 import dagger.Provides
@@ -28,4 +29,8 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideCharactersDao(db: AppDatabase): CharacterDao = db.charactersDao()
+
+    @Provides
+    @Singleton
+    fun provideFavoriteCharactersDao(db: AppDatabase): FavoriteCharacterDao = db.favoriteCharactersDao()
 }

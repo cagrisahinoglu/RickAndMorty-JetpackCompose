@@ -10,5 +10,4 @@ import javax.inject.Inject
 class CharacterRemoteDataSourceImpl @Inject constructor(
     private val characterService: CharacterService
 ): BaseDataSource() , CharacterRemoteDataSource {
-    override suspend fun getCharacterList(page: Int): Result = characterService.getCharacterList(page).toDomain()
 }

@@ -13,7 +13,7 @@ class RemoveCharacterFavoriteUseCase(
 
     suspend operator fun invoke(character: Character) {
         withContext(dispatcher) {
-            characterRepository.deleteCharacter(character)
+            characterRepository.removeCharacterFavorite(character)
         }
     }
 }

@@ -9,4 +9,5 @@ object RemoteConstants {
 
 object LocalConstants {
     const val CHARACTER_TABLE_NAME = "characters"
+    const val FAVORITE_CHARACTER_TABLE_NAME = "favorite_characters"
 }

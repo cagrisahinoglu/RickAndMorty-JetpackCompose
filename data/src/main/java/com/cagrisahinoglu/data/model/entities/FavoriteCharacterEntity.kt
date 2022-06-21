@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 import com.cagrisahinoglu.data.utils.LocalConstants
 import com.cagrisahinoglu.domain.model.Character
 
-@Entity(tableName = LocalConstants.CHARACTER_TABLE_NAME)
-data class CharacterEntity(
+@Entity(tableName = LocalConstants.FAVORITE_CHARACTER_TABLE_NAME)
+data class FavoriteCharacterEntity(
     @PrimaryKey(autoGenerate = false) val id: Int,
     val name: String,
     val species: String,
@@ -17,7 +17,7 @@ data class CharacterEntity(
     val next: Int? = null
 )
 
-fun CharacterEntity.toDomain(): Character {
+fun FavoriteCharacterEntity.toDomain(): Character {
     return Character(
         id = id,
         name = name,
@@ -28,8 +28,8 @@ fun CharacterEntity.toDomain(): Character {
     )
 }
 
-fun Character.toEntity(): CharacterEntity {
-    return CharacterEntity(
+fun Character.toFavoriteEntity(): FavoriteCharacterEntity {
+    return FavoriteCharacterEntity(
         id = id,
         name = name,
         species = species,

@@ -9,10 +9,6 @@ import com.cagrisahinoglu.data.model.entities.CharacterEntity
 
 @Dao
 interface CharacterDao : BaseDao<CharacterEntity> {
-
-    @Query("SELECT * FROM characters WHERE id = :characterId")
-    suspend fun checkIsCharacterFavorite(characterId: Int): List<CharacterEntity>
-
     @Query("SELECT * FROM characters order by id ASC")
     fun getAllCharacters(): PagingSource<Int, CharacterEntity>
 

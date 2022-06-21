@@ -7,9 +7,8 @@ import com.cagrisahinoglu.domain.util.DataState
 import kotlinx.coroutines.flow.Flow
 
 interface CharacterRepository {
-    suspend fun getCharacterList(page: Int): Result
-    suspend fun insertCharacter(character: Character)
-    suspend fun deleteCharacter(character: Character)
-    suspend fun checkIsCharacterFavorite(characterId: Int): List<Character>
     fun getAllCharacters(): Flow<PagingData<Character>>
+    fun getAllFavoriteCharacters(): Flow<PagingData<Character>>
+    suspend fun insertCharacterFavorite(character: Character)
+    suspend fun removeCharacterFavorite(character: Character)
 }
