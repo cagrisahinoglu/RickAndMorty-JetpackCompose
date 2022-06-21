@@ -25,38 +25,38 @@ class FavoritesViewModel @Inject constructor(
     val viewState: State<ViewState<List<Character>>>
         get() = _viewState
 
-    fun getFavoriteCharacterList() {
-        _viewState.value = ViewState.Loading
-        viewModelScope.launch {
-            getAllFavoriteCharactersUseCase()
-                .collect { dataState ->
-                    when (dataState) {
-                        is DataState.Success -> {
-                            if(dataState.data.isEmpty()) {
-                                _viewState.value = ViewState.NoResult
-                            } else {
-                                _viewState.value = ViewState.Success(
-                                    data = dataState.data
-                                )
-                            }
-                        }
-                        is DataState.Error -> {
-                            _viewState.value = ViewState.Error(
-                                e = dataState.exception
-                            )
-                        }
-                        is DataState.Loading -> {
-                            _viewState.value = ViewState.Loading
-                        }
-                    }
-                }
-        }
-    }
+//    fun getFavoriteCharacterList() {
+//        _viewState.value = ViewState.Loading
+//        viewModelScope.launch {
+//            getAllFavoriteCharactersUseCase()
+//                .collect { dataState ->
+//                    when (dataState) {
+//                        is DataState.Success -> {
+//                            if(dataState.data.isEmpty()) {
+//                                _viewState.value = ViewState.NoResult
+//                            } else {
+//                                _viewState.value = ViewState.Success(
+//                                    data = dataState.data
+//                                )
+//                            }
+//                        }
+//                        is DataState.Error -> {
+//                            _viewState.value = ViewState.Error(
+//                                e = dataState.exception
+//                            )
+//                        }
+//                        is DataState.Loading -> {
+//                            _viewState.value = ViewState.Loading
+//                        }
+//                    }
+//                }
+//        }
+//    }
 
     fun removeFavoriteCharacter(character: Character) {
         viewModelScope.launch {
             removeCharacterFavoriteUseCase(character = character)
-            getFavoriteCharacterList()
+            //getFavoriteCharacterList()
         }
     }
 }

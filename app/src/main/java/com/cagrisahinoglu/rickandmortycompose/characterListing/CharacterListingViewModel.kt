@@ -3,20 +3,15 @@ package com.cagrisahinoglu.rickandmortycompose.characterListing
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import com.cagrisahinoglu.domain.model.Character
 import com.cagrisahinoglu.domain.usecase.characters.AddCharacterFavoriteUseCase
 import com.cagrisahinoglu.domain.usecase.characters.GetCharacterListUseCase
 import com.cagrisahinoglu.domain.usecase.characters.RemoveCharacterFavoriteUseCase
 import com.cagrisahinoglu.rickandmortycompose.util.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -40,14 +35,7 @@ class CharacterListingViewModel
         _viewState.value = ViewState.Loading
         viewModelScope.launch() {
             delay(500)
-            val response = Pager(
-                PagingConfig(pageSize = 20)
-            ) {
-                getCharacterListUseCase
-            }
-                .flow
-                .cachedIn(viewModelScope)
-                .flowOn(Dispatchers.IO)
+            val response = getCharacterListUseCase()
             _viewState.value = ViewState.Success(
                 data = response
             )

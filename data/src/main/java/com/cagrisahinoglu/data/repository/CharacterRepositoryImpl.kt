@@ -1,5 +1,6 @@
 package com.cagrisahinoglu.data.repository
 
+import androidx.paging.PagingData
 import com.cagrisahinoglu.domain.dataSource.local.CharactersLocalDataSource
 import com.cagrisahinoglu.domain.dataSource.remote.CharacterRemoteDataSource
 import com.cagrisahinoglu.domain.model.Character
@@ -28,6 +29,6 @@ class CharacterRepositoryImpl @Inject constructor(
     override suspend fun checkIsCharacterFavorite(characterId: Int): List<Character> =
         charactersLocalDataSource.checkIsCharacterFavorite(characterId)
 
-    override fun getAllFavoriteCharacters(): Flow<DataState<List<Character>>> =
-        charactersLocalDataSource.getAllFavoriteCharacter()
+    override fun getAllCharacters(): Flow<PagingData<Character>> =
+        charactersLocalDataSource.getAllCharacters()
 }

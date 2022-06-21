@@ -12,7 +12,9 @@ data class CharacterEntity(
     val species: String,
     val gender: String,
     val status: String,
-    val image: String
+    val image: String,
+    val prev: Int? = null,
+    val next: Int? = null
 )
 
 fun CharacterEntity.toDomain(): Character {

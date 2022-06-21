@@ -1,5 +1,6 @@
 package com.cagrisahinoglu.domain.repository
 
+import androidx.paging.PagingData
 import com.cagrisahinoglu.domain.model.Character
 import com.cagrisahinoglu.domain.model.Result
 import com.cagrisahinoglu.domain.util.DataState
@@ -10,5 +11,5 @@ interface CharacterRepository {
     suspend fun insertCharacter(character: Character)
     suspend fun deleteCharacter(character: Character)
     suspend fun checkIsCharacterFavorite(characterId: Int): List<Character>
-    fun getAllFavoriteCharacters(): Flow<DataState<List<Character>>>
+    fun getAllCharacters(): Flow<PagingData<Character>>
 }

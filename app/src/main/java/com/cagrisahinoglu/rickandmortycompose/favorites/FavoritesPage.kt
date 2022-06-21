@@ -30,9 +30,9 @@ fun FavoritesPage(
     val viewState = favoritesViewModel.viewState.value
     var dialogStatus by remember { mutableStateOf(false) }
     var selectedCharacterToRemove by remember { mutableStateOf<Character?>(null) }
-    LaunchedEffect(Unit) {
-        favoritesViewModel.getFavoriteCharacterList()
-    }
+//    LaunchedEffect(Unit) {
+//        favoritesViewModel.getFavoriteCharacterList()
+//    }
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
