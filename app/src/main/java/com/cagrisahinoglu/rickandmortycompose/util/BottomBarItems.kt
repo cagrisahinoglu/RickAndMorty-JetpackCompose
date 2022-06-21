@@ -12,11 +12,6 @@ enum class BottomBarItems(
         BottomBarNames.characters,
         R.drawable.ic_characters
     ),
-    Episodes(
-        Routes.episodes,
-        BottomBarNames.episodes,
-        R.drawable.ic_episodes
-    ),
     Favorites(
         Routes.favorites,
         BottomBarNames.favorites,
