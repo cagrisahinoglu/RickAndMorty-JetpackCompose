@@ -19,12 +19,12 @@ object UseCaseModule {
 
     @Provides
     @ViewModelScoped
-    fun provideAddFavoriteCharacterUseCase(characterRepository: CharacterRepository): AddCharacterFavoriteUseCase =
-        AddCharacterFavoriteUseCase(characterRepository = characterRepository)
+    fun provideUpdateFavoriteStatusUseCase(characterRepository: CharacterRepository): UpdateFavoriteStatusUseCase =
+        UpdateFavoriteStatusUseCase(characterRepository = characterRepository)
 
     @Provides
     @ViewModelScoped
-    fun provideRemoveFavoriteCharacterUseCase(characterRepository: CharacterRepository): RemoveCharacterFavoriteUseCase =
+    fun provideRemoveCharacterFavoriteUseCase(characterRepository: CharacterRepository): RemoveCharacterFavoriteUseCase =
         RemoveCharacterFavoriteUseCase(characterRepository = characterRepository)
 
     @Provides
@@ -36,4 +36,14 @@ object UseCaseModule {
     @ViewModelScoped
     fun provideGetCharacterDetailUseCase(characterRepository: CharacterRepository): GetCharacterDetailsUseCase =
         GetCharacterDetailsUseCase(characterRepository = characterRepository)
+
+    @Provides
+    @ViewModelScoped
+    fun provideSearchCharacterUseCase(characterRepository: CharacterRepository): SearchCharacterUseCase =
+        SearchCharacterUseCase(characterRepository = characterRepository)
+
+    @Provides
+    @ViewModelScoped
+    fun provideGetSingleCharacterUseCase(characterRepository: CharacterRepository): GetSingleCharacterUseCase =
+        GetSingleCharacterUseCase(characterRepository = characterRepository)
 }

@@ -13,7 +13,8 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class CharacterRepositoryImpl @Inject constructor(
-    private val charactersLocalDataSource: CharactersLocalDataSource
+    private val charactersLocalDataSource: CharactersLocalDataSource,
+    private val characterRemoteDataSource: CharacterRemoteDataSource
 ) : CharacterRepository {
     override fun getAllCharacters(): Flow<PagingData<Character>> =
         charactersLocalDataSource.getAllCharacters().map {
@@ -31,6 +32,18 @@ class CharacterRepositoryImpl @Inject constructor(
 
     override fun getCharacterById(characterId: Int): Flow<DataState<Character?>> =
         charactersLocalDataSource.getCharacterById(characterId)
+
+    override fun searchCharacter(searchText: String): Flow<PagingData<Character>> =
+        characterRemoteDataSource.searchCharacters(searchText).map {
+            it.map { character ->
+                val checkIsFavorite = charactersLocalDataSource.getFavoriteCharacterById(character.id)
+                character.isFav = checkIsFavorite.isNotEmpty()
+                character
+            }
+        }
+
+    override suspend fun getSingleCharacter(id: Int): Character? =
+        characterRemoteDataSource.getSingleCharacter(id)
 
     override suspend fun insertCharacterFavorite(character: Character) =
         charactersLocalDataSource.insertCharacterFavorite(character)

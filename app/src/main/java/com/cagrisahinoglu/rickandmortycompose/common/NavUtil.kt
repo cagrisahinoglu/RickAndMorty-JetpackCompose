@@ -13,6 +13,8 @@ import com.cagrisahinoglu.rickandmortycompose.characterListing.CharacterListingP
 import com.cagrisahinoglu.rickandmortycompose.characterListing.CharacterListingViewModel
 import com.cagrisahinoglu.rickandmortycompose.favorites.FavoritesPage
 import com.cagrisahinoglu.rickandmortycompose.favorites.FavoritesViewModel
+import com.cagrisahinoglu.rickandmortycompose.search.SearchPage
+import com.cagrisahinoglu.rickandmortycompose.search.SearchPageViewModel
 import com.cagrisahinoglu.rickandmortycompose.util.BottomBarItems
 import com.cagrisahinoglu.rickandmortycompose.util.Routes
 
@@ -23,6 +25,7 @@ fun NavUtil(
     val characterViewModel: CharacterListingViewModel = hiltViewModel()
     val favoritesViewModel: FavoritesViewModel = hiltViewModel()
     val characterDetailViewModel: CharacterDetailViewModel = hiltViewModel()
+    val searchPageViewModel: SearchPageViewModel = hiltViewModel()
     NavHost(
         navController = navHostController,
         startDestination = BottomBarItems.Characters.route
@@ -37,6 +40,12 @@ fun NavUtil(
             FavoritesPage(
                 navController = navHostController,
                 favoritesViewModel = favoritesViewModel
+            )
+        }
+        composable(BottomBarItems.Search.route) {
+            SearchPage(
+                navController = navHostController,
+                searchPageViewModel = searchPageViewModel
             )
         }
         composable(

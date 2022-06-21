@@ -5,6 +5,7 @@ object RemoteConstants {
     const val CHARACTER_LIST = "character"
 
     const val CHARACTER_LIST_PAGE = "page"
+    const val CHARACTER_LIST_NAME_SEARCH = "name"
 }
 
 object LocalConstants {

@@ -10,10 +10,7 @@ class RemoveCharacterFavoriteUseCase(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val characterRepository: CharacterRepository
 ) {
-
-    suspend operator fun invoke(character: Character) {
-        withContext(dispatcher) {
-            characterRepository.removeCharacterFavorite(character)
-        }
+    suspend operator fun invoke(character: Character) = withContext(dispatcher) {
+        characterRepository.removeCharacterFavorite(character)
     }
 }

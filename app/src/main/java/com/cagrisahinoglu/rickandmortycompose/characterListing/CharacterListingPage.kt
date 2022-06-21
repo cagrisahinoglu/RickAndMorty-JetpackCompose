@@ -45,20 +45,22 @@ fun CharacterListingPage(
                         var isFav by rememberSaveable(pagingItems[index]) {
                             mutableStateOf(pagingItems[index]?.isFav)
                         }
-                        CharacterListingItem(
-                            item = item!!,
-                            isFav = isFav!!,
-                            onItemClick = {
-                                navController.navigate(Routes.detail+"/${item.id}")
-                            },
-                            onFavButtonClick = {
-                                characterViewModel.updateFavStatus(
-                                    character = item,
-                                    isFav = isFav!!
-                                )
-                                isFav = !isFav!!
-                            }
-                        )
+                        item?.let {
+                            CharacterListingItem(
+                                item = it,
+                                isFav = isFav!!,
+                                onItemClick = {
+                                    navController.navigate(Routes.detail+"/${item.id}")
+                                },
+                                onFavButtonClick = {
+                                    characterViewModel.updateFavStatus(
+                                        character = item,
+                                        isFav = isFav!!
+                                    )
+                                    isFav = !isFav!!
+                                }
+                            )
+                        }
                     }
                 }
             }

@@ -2,7 +2,7 @@ package com.cagrisahinoglu.data.dataSource.local
 
 import androidx.paging.*
 import com.cagrisahinoglu.data.dataSource.BaseDataSource
-import com.cagrisahinoglu.data.local.CharacterRemoteMediator
+import com.cagrisahinoglu.data.pagination.CharacterRemoteMediator
 import com.cagrisahinoglu.data.local.dao.CharacterDao
 import com.cagrisahinoglu.data.local.dao.FavoriteCharacterDao
 import com.cagrisahinoglu.data.model.entities.toDomain

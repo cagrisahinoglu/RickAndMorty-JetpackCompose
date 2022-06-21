@@ -1,4 +1,4 @@
-package com.cagrisahinoglu.data.local
+package com.cagrisahinoglu.data.pagination
 
 import android.util.Log
 import androidx.paging.*

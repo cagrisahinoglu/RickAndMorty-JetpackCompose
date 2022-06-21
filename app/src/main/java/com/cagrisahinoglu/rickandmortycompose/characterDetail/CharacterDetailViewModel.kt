@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.cagrisahinoglu.domain.model.Character
 import com.cagrisahinoglu.domain.usecase.characters.GetCharacterDetailsUseCase
+import com.cagrisahinoglu.domain.usecase.characters.GetSingleCharacterUseCase
 import com.cagrisahinoglu.domain.util.DataState
 import com.cagrisahinoglu.rickandmortycompose.util.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CharacterDetailViewModel @Inject constructor(
-    private val getCharacterDetailsUseCase: GetCharacterDetailsUseCase
+    private val getCharacterDetailsUseCase: GetCharacterDetailsUseCase,
+    private val getSingleCharacterUseCase: GetSingleCharacterUseCase
 ) : ViewModel() {
 
     private val _viewState: MutableState<ViewState<Character>> = mutableStateOf(ViewState.Loading)
@@ -28,7 +30,12 @@ class CharacterDetailViewModel @Inject constructor(
                 when (dataState) {
                     is DataState.Success -> {
                         if(dataState.data == null) {
-                            _viewState.value = ViewState.NoResult
+                            val response = getSingleCharacterUseCase(id)
+                            if(response == null) {
+                                _viewState.value = ViewState.NoResult
+                            } else {
+                                _viewState.value = ViewState.Success(response)
+                            }
                         } else {
                             _viewState.value = ViewState.Success(dataState.data!!)
                         }

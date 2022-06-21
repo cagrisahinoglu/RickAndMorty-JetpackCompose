@@ -10,6 +10,8 @@ interface CharacterRepository {
     fun getAllCharacters(): Flow<PagingData<Character>>
     fun getAllFavoriteCharacters(): Flow<PagingData<Character>>
     fun getCharacterById(characterId: Int): Flow<DataState<Character?>>
+    fun searchCharacter(searchText: String): Flow<PagingData<Character>>
+    suspend fun getSingleCharacter(id: Int): Character?
     suspend fun insertCharacterFavorite(character: Character)
     suspend fun removeCharacterFavorite(character: Character)
 }

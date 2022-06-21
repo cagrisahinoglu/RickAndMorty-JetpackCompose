@@ -6,13 +6,20 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class AddCharacterFavoriteUseCase (
+class UpdateFavoriteStatusUseCase(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO,
-    private val characterRepository: CharacterRepository) {
-
-    suspend operator fun invoke(character: Character) {
+    private val characterRepository: CharacterRepository
+) {
+    suspend operator fun invoke(
+        isFav: Boolean,
+        character: Character
+    ) {
         withContext(dispatcher) {
-            characterRepository.insertCharacterFavorite(character)
+            if (isFav) {
+                characterRepository.removeCharacterFavorite(character)
+            } else {
+                characterRepository.insertCharacterFavorite(character)
+            }
         }
     }
 }
