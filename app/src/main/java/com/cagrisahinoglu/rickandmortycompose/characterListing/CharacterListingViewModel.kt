@@ -28,9 +28,6 @@ class CharacterListingViewModel
     val viewState: State<ViewState<Flow<PagingData<Character>>>>
         get() = _viewState
 
-    var selectedCharacter by mutableStateOf<Character?>(null)
-        private set
-
     fun getCharacters() {
         _viewState.value = ViewState.Loading
         viewModelScope.launch() {
@@ -50,9 +47,5 @@ class CharacterListingViewModel
                 addCharacterFavoriteUseCase(character)
             }
         }
-    }
-
-    fun setCharacter(character: Character?) {
-        selectedCharacter = character
     }
 }

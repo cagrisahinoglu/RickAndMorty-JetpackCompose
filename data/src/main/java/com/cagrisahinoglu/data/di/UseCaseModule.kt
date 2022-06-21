@@ -1,10 +1,7 @@
 package com.cagrisahinoglu.data.di
 
 import com.cagrisahinoglu.domain.repository.CharacterRepository
-import com.cagrisahinoglu.domain.usecase.characters.AddCharacterFavoriteUseCase
-import com.cagrisahinoglu.domain.usecase.characters.GetAllFavoriteCharactersUseCase
-import com.cagrisahinoglu.domain.usecase.characters.GetCharacterListUseCase
-import com.cagrisahinoglu.domain.usecase.characters.RemoveCharacterFavoriteUseCase
+import com.cagrisahinoglu.domain.usecase.characters.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,4 +31,9 @@ object UseCaseModule {
     @ViewModelScoped
     fun provideGetAllFavoriteCharactersUseCase(characterRepository: CharacterRepository): GetAllFavoriteCharactersUseCase =
         GetAllFavoriteCharactersUseCase(characterRepository = characterRepository)
+
+    @Provides
+    @ViewModelScoped
+    fun provideGetCharacterDetailUseCase(characterRepository: CharacterRepository): GetCharacterDetailsUseCase =
+        GetCharacterDetailsUseCase(characterRepository = characterRepository)
 }

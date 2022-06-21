@@ -29,6 +29,9 @@ class CharacterRepositoryImpl @Inject constructor(
     override fun getAllFavoriteCharacters(): Flow<PagingData<Character>> =
         charactersLocalDataSource.getAllFavoriteCharacters()
 
+    override fun getCharacterById(characterId: Int): Flow<DataState<Character?>> =
+        charactersLocalDataSource.getCharacterById(characterId)
+
     override suspend fun insertCharacterFavorite(character: Character) =
         charactersLocalDataSource.insertCharacterFavorite(character)
 

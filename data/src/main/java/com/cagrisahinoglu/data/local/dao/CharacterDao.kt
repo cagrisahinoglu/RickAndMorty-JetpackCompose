@@ -13,7 +13,7 @@ interface CharacterDao : BaseDao<CharacterEntity> {
     fun getAllCharacters(): PagingSource<Int, CharacterEntity>
 
     @Query("SELECT * FROM characters where id = :id")
-    fun getCharacterById(id: Int): CharacterEntity
+    fun getCharacterById(id: Int): CharacterEntity?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addCharacterList(characters: List<CharacterEntity>)

@@ -21,6 +21,7 @@ import com.cagrisahinoglu.rickandmortycompose.characterListing.CharacterListingI
 import com.cagrisahinoglu.rickandmortycompose.common.AppTopBar
 import com.cagrisahinoglu.rickandmortycompose.common.NoResultView
 import com.cagrisahinoglu.rickandmortycompose.util.BottomBarItems
+import com.cagrisahinoglu.rickandmortycompose.util.Routes
 
 @Composable
 fun FavoritesPage(
@@ -70,7 +71,6 @@ fun FavoritesPage(
                     ) {
                         NoResultView(
                             animSize = 200.dp,
-                            animFileRes = R.raw.no_result_lottie,
                             text = "There is no favorite character"
                         )
                     }
@@ -86,8 +86,7 @@ fun FavoritesPage(
                                 item = item!!,
                                 showFavButton = false,
                                 onItemClick = {
-        //                                characterViewModel.setCharacter(item)
-        //                                navController.navigate(Routes.detail)
+                                    navController.navigate(Routes.detail+"/${item.id}")
                                 },
                                 onUnfavButtonClick = { character ->
                                     dialogStatus = true

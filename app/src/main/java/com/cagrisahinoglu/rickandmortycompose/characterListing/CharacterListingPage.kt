@@ -49,8 +49,7 @@ fun CharacterListingPage(
                             item = item!!,
                             isFav = isFav!!,
                             onItemClick = {
-                                characterViewModel.setCharacter(item)
-                                navController.navigate(Routes.detail)
+                                navController.navigate(Routes.detail+"/${item.id}")
                             },
                             onFavButtonClick = {
                                 characterViewModel.updateFavStatus(

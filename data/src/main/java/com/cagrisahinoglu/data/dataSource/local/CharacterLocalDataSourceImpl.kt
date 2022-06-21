@@ -10,6 +10,7 @@ import com.cagrisahinoglu.data.model.entities.toFavoriteEntity
 import com.cagrisahinoglu.data.remote.api.CharacterService
 import com.cagrisahinoglu.domain.dataSource.local.CharactersLocalDataSource
 import com.cagrisahinoglu.domain.model.Character
+import com.cagrisahinoglu.domain.util.DataState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -52,6 +53,9 @@ class CharacterLocalDataSourceImpl @Inject constructor(
 
     override suspend fun getFavoriteCharacterById(id: Int): List<Character> =
         favoriteCharacterDao.getFavoriteCharacterById(id).map { it.toDomain() }
+
+    override fun getCharacterById(id: Int): Flow<DataState<Character?>> =
+        getResultAsFlow { characterDao.getCharacterById(id)?.toDomain() }
 
     override suspend fun insertCharacterFavorite(character: Character) =
         favoriteCharacterDao.insertCharacter(character.toFavoriteEntity())
