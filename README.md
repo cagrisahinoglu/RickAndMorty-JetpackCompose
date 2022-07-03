@@ -5,6 +5,15 @@
   <img src="https://img.shields.io/badge/Android%20Studio-3DDC84.svg?style=for-the-badge&logo=android-studio&logoColor=white" />
 </p>
 
+<p align="center">
+ <img src="images/img1.png" width="25%"/>
+  <img src="images/img2.png" width="25%"/>
+  <img src="images/img3.png" width="25%"/>
+  <img src="images/img4.png" width="25%"/>
+  <img src="images/img5.png" width="25%"/>
+
+</p>
+
 ## About The Project
   
 This Sample Application is developed by using Jetpack Compose. Recommended clean architecture principles and best practice are followed. 
@@ -29,3 +38,12 @@ This Sample Application is developed by using Jetpack Compose. Recommended clean
 - [Flow](https://developer.android.com/kotlin/flow) - Flows are built on top of coroutines and can provide multiple values.
 - [Coroutines](https://github.com/Kotlin/kotlinx.coroutines) - Library Support for coroutines,provides runBlocking coroutine builder used in tests.
 - [Gson](https://github.com/google/gson) - A modern JSON library for Kotlin and Java.
+
+## 🏆 MAD Scores
+
+<p align="center">
+ <img src="images/madscore/summary.png" width="75%"/>
+<img src="images/madscore/kotlin.png" width="75%"/>
+<img src="images/madscore/jetpack.png" width="75%"/>
+
+</p>
