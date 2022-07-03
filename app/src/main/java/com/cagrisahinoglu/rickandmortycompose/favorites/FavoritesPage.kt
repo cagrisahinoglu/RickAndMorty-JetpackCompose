@@ -16,7 +16,6 @@ import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.cagrisahinoglu.domain.model.Character
-import com.cagrisahinoglu.rickandmortycompose.R
 import com.cagrisahinoglu.rickandmortycompose.characterListing.CharacterListingItem
 import com.cagrisahinoglu.rickandmortycompose.common.AppTopBar
 import com.cagrisahinoglu.rickandmortycompose.common.NoResultView
@@ -33,7 +32,7 @@ fun FavoritesPage(
     LaunchedEffect(Unit) {
         favoritesViewModel.getFavoriteCharacterList()
     }
-    val state = favoritesViewModel.characters
+    val state = favoritesViewModel.uiState.collectAsState().value
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -55,46 +54,59 @@ fun FavoritesPage(
             title = BottomBarItems.Favorites.barItemName,
         )
 
-        state?.let {
-            val data = it.value.collectAsLazyPagingItems()
-            val loadState = data.loadState
-            when {
-                loadState.source.refresh is LoadState.Loading -> {
-                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                        CircularProgressIndicator()
+        when (state) {
+            is FavoritesUIState.Response -> {
+                val data = state.data.collectAsLazyPagingItems()
+                val loadState = data.loadState
+                when {
+                    loadState.source.refresh is LoadState.Loading -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularProgressIndicator()
+                        }
                     }
-                }
-                data.itemCount == 0 -> {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        NoResultView(
-                            animSize = 200.dp,
-                            text = "There is no favorite character"
-                        )
-                    }
-                }
-                else -> {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxSize()
-                    ) {
-
-                        items(data.itemCount) { index ->
-                            val item = data[index]
-                            CharacterListingItem(
-                                item = item!!,
-                                showFavButton = false,
-                                onItemClick = {
-                                    navController.navigate(Routes.detail+"/${item.id}")
-                                },
-                                onUnfavButtonClick = { character ->
-                                    dialogStatus = true
-                                    selectedCharacterToRemove = character
-                                }
+                    data.itemCount == 0 -> {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            NoResultView(
+                                animSize = 200.dp,
+                                text = "There is no favorite character"
                             )
                         }
                     }
+                    else -> {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+
+                            items(data.itemCount) { index ->
+                                val item = data[index]
+                                CharacterListingItem(
+                                    item = item!!,
+                                    showFavButton = false,
+                                    onItemClick = {
+                                        navController.navigate(Routes.detail + "/${item.id}")
+                                    },
+                                    onUnfavButtonClick = { character ->
+                                        dialogStatus = true
+                                        selectedCharacterToRemove = character
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+            FavoritesUIState.Loading -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
                 }
             }
         }

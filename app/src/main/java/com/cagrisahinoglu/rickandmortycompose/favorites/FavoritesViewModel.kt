@@ -1,18 +1,14 @@
 package com.cagrisahinoglu.rickandmortycompose.favorites
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.cagrisahinoglu.domain.model.Character
 import com.cagrisahinoglu.domain.usecase.characters.GetAllFavoriteCharactersUseCase
 import com.cagrisahinoglu.domain.usecase.characters.RemoveCharacterFavoriteUseCase
+import com.cagrisahinoglu.rickandmortycompose.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,17 +16,18 @@ import javax.inject.Inject
 class FavoritesViewModel @Inject constructor(
     private val getAllFavoriteCharactersUseCase: GetAllFavoriteCharactersUseCase,
     private val removeCharacterFavoriteUseCase: RemoveCharacterFavoriteUseCase
-) : ViewModel() {
-
-    private var _characters: MutableState<Flow<PagingData<Character>>>? = mutableStateOf(emptyFlow())
-    val characters: State<Flow<PagingData<Character>>>?
-        get() = _characters
+) : BaseViewModel<FavoritesUIState<Flow<PagingData<Character>>>>() {
 
     fun getFavoriteCharacterList() {
         viewModelScope.launch {
+            setState(FavoritesUIState.Loading)
             delay(500)
             val response = getAllFavoriteCharactersUseCase()
-            _characters?.value = response
+            setState(
+                FavoritesUIState.Response(
+                    data = response
+                )
+            )
         }
     }
 
@@ -39,4 +36,7 @@ class FavoritesViewModel @Inject constructor(
             removeCharacterFavoriteUseCase(character)
         }
     }
+
+    override fun setDefaultUIState(): FavoritesUIState<Flow<PagingData<Character>>> =
+        FavoritesUIState.Loading
 }

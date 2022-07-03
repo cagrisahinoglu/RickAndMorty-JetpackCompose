@@ -1,13 +1,11 @@
 package com.cagrisahinoglu.rickandmortycompose.characterListing
 
-import androidx.compose.runtime.*
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import com.cagrisahinoglu.domain.model.Character
 import com.cagrisahinoglu.domain.usecase.characters.GetCharacterListUseCase
 import com.cagrisahinoglu.domain.usecase.characters.UpdateFavoriteStatusUseCase
-import com.cagrisahinoglu.rickandmortycompose.util.ViewState
+import com.cagrisahinoglu.rickandmortycompose.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -19,20 +17,21 @@ class CharacterListingViewModel
 @Inject constructor(
     private val getCharacterListUseCase: GetCharacterListUseCase,
     private val updateFavoriteStatusUseCase: UpdateFavoriteStatusUseCase
-) : ViewModel() {
+) : BaseViewModel<CharacterListingUIState<Flow<PagingData<Character>>>>() {
 
-    private val _viewState: MutableState<ViewState<Flow<PagingData<Character>>>> =
-        mutableStateOf(ViewState.Loading)
-    val viewState: State<ViewState<Flow<PagingData<Character>>>>
-        get() = _viewState
+    init {
+        getCharacters()
+    }
 
-    fun getCharacters() {
-        _viewState.value = ViewState.Loading
+    private fun getCharacters() {
+        setState(CharacterListingUIState.Loading)
         viewModelScope.launch() {
             delay(500)
             val response = getCharacterListUseCase()
-            _viewState.value = ViewState.Success(
-                data = response
+            setState(
+                CharacterListingUIState.Response(
+                    data = response
+                )
             )
         }
     }
@@ -45,4 +44,8 @@ class CharacterListingViewModel
             )
         }
     }
+
+    override fun setDefaultUIState(): CharacterListingUIState<Flow<PagingData<Character>>> =
+        CharacterListingUIState.Loading
+
 }

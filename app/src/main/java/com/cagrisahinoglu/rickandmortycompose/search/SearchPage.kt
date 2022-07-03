@@ -32,7 +32,7 @@ fun SearchPage(
     navController: NavController,
     searchPageViewModel: SearchPageViewModel
 ) {
-    val viewState = searchPageViewModel.viewState.value
+    val viewState = searchPageViewModel.uiState.collectAsState().value
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -78,12 +78,12 @@ fun SearchPage(
             )
             Spacer(modifier = Modifier.height(5.dp))
             when (viewState) {
-                ViewState.Loading -> {
+                SearchPageUIState.Loading -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         CircularProgressIndicator()
                     }
                 }
-                ViewState.MissingCharacter -> {
+                SearchPageUIState.MissingCharacter -> {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         NoResultView(
                             animSize = 200.dp,
@@ -91,7 +91,7 @@ fun SearchPage(
                         )
                     }
                 }
-                is ViewState.Success -> {
+                is SearchPageUIState.Success -> {
                     val data = viewState.data.collectAsLazyPagingItems()
                     val hasData = data.itemCount > 0
                     if (hasData) {
@@ -129,6 +129,7 @@ fun SearchPage(
                         }
                     }
                 }
+                is SearchPageUIState.Error -> TODO()
             }
         }
     }

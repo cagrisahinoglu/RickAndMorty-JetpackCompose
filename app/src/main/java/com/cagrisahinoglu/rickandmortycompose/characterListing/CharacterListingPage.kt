@@ -1,5 +1,6 @@
 package com.cagrisahinoglu.rickandmortycompose.characterListing
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,18 +16,15 @@ import androidx.navigation.NavController
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.cagrisahinoglu.rickandmortycompose.common.AppTopBar
 import com.cagrisahinoglu.rickandmortycompose.util.BottomBarItems
-import com.cagrisahinoglu.rickandmortycompose.util.ViewState
 import com.cagrisahinoglu.rickandmortycompose.util.Routes
+import com.cagrisahinoglu.rickandmortycompose.util.ViewState
 
 @Composable
 fun CharacterListingPage(
     navController: NavController,
     characterViewModel: CharacterListingViewModel
 ) {
-    LaunchedEffect(Unit) {
-        characterViewModel.getCharacters()
-    }
-    val viewState = characterViewModel.viewState.value
+    val viewState = characterViewModel.uiState.collectAsState().value
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -34,8 +32,8 @@ fun CharacterListingPage(
             title = BottomBarItems.Characters.barItemName,
         )
 
-        when(viewState) {
-            is ViewState.Success -> {
+        when (viewState) {
+            is CharacterListingUIState.Response -> {
                 val pagingItems = viewState.data.collectAsLazyPagingItems()
                 LazyColumn(
                     modifier = Modifier.fillMaxSize()
@@ -66,7 +64,7 @@ fun CharacterListingPage(
                     }
                 }
             }
-            is ViewState.Loading ->{
+            is CharacterListingUIState.Loading -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
@@ -75,9 +73,6 @@ fun CharacterListingPage(
                         modifier = Modifier.size(50.dp)
                     )
                 }
-            }
-            is ViewState.Error -> {
-
             }
         }
     }

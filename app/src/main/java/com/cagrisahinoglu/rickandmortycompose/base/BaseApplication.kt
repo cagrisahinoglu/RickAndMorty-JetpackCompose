@@ -1,4 +1,4 @@
-package com.cagrisahinoglu.rickandmortycompose
+package com.cagrisahinoglu.rickandmortycompose.base
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

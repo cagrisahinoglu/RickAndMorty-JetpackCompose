@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -17,11 +18,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.cagrisahinoglu.rickandmortycompose.characterListing.CharacterListingViewModel
 import com.cagrisahinoglu.rickandmortycompose.common.AppTopBar
 import com.cagrisahinoglu.rickandmortycompose.common.NetworkImage
 import com.cagrisahinoglu.rickandmortycompose.common.NoResultView
-import com.cagrisahinoglu.rickandmortycompose.util.ViewState
 import com.cagrisahinoglu.rickandmortycompose.util.getColorForLiveStatus
 
 @Composable
@@ -33,9 +32,8 @@ fun CharacterDetail(
     LaunchedEffect(characterId) {
         characterDetailViewModel.getCharacterDetail(characterId)
     }
-    val viewState = characterDetailViewModel.viewState.value
-    when (viewState) {
-        is ViewState.Success -> {
+    when (val viewState = characterDetailViewModel.uiState.collectAsState().value) {
+        is CharacterDetailUIState.Success -> {
             val character = viewState.data
             Column(
                 modifier = Modifier.fillMaxSize(),
@@ -102,7 +100,7 @@ fun CharacterDetail(
                 }
             }
         }
-        ViewState.Loading -> {
+        CharacterDetailUIState.Loading -> {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
@@ -110,15 +108,7 @@ fun CharacterDetail(
                 CircularProgressIndicator()
             }
         }
-        ViewState.NoResult -> {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                NoResultView(animSize = 200.dp, text = "Character not found")
-            }
-        }
-        is ViewState.Error -> {
+        CharacterDetailUIState.NoResult, is CharacterDetailUIState.Error -> {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
